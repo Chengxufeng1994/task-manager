@@ -20,6 +20,17 @@ const UserSchema = new Schema({
       }
     },
   },
+  password: {
+    type: String,
+    trim: true,
+    require: true,
+    minLength: 7,
+    validate(value) {
+      if (value.toLowerCase().includes('password')) {
+        throw new Error('Password cannot contain "Password".');
+      }
+    },
+  },
   age: {
     type: Number,
     default: 0,
