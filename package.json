@@ -1,10 +1,11 @@
 {
   "name": "task-manager",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node Course - Task Manager",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf node_modules",
+    "start": "NODE_ENV=production node src/index.js",
     "dev": "NODE_ENV=development nodemon src/index.js",
     "dev:debug": "NODE_ENV=development nodemon --inspect src/index.js",
     "lint": "eslint .",
@@ -17,10 +18,11 @@
     "prepare": "husky install"
   },
   "keywords": [],
-  "author": "",
+  "author": "Benny Cheng",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "helmet": "^4.6.0",
     "mongodb": "^4.0.0",
     "mongoose": "^5.13.3",
     "morgan": "^1.10.0",

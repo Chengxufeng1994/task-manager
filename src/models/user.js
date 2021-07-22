@@ -7,13 +7,13 @@ const UserSchema = new Schema({
   name: {
     type: String,
     trim: true,
-    require: true,
+    required: true,
   },
   email: {
     type: String,
     trim: true,
     lowercase: true,
-    require: true,
+    required: true,
     validate(value) {
       if (!isEmail(value)) {
         throw new Error('Email is inValid.');
@@ -23,7 +23,7 @@ const UserSchema = new Schema({
   password: {
     type: String,
     trim: true,
-    require: true,
+    required: true,
     minLength: 7,
     validate(value) {
       if (value.toLowerCase().includes('password')) {
