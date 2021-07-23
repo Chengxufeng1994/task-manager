@@ -54,14 +54,20 @@ const updateTask = async (req, res) => {
   }
 
   try {
-    const task = await Task.findOneAndUpdate(taskId, body, {
-      new: true,
-      runValidators: true,
-    });
+    // const task = await Task.findOneAndUpdate(taskId, body, {
+    //   new: true,
+    //   runValidators: true,
+    // });
 
+    const task = await Task.findById(taskId);
     if (!task) {
       return res.status(404).json();
     }
+
+    updateKeys.forEach((updateKey) => {
+      task[updateKey] = body[updateKey];
+    });
+    await task.save();
 
     res.status(201).json(task);
   } catch (error) {

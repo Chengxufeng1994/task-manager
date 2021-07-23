@@ -6,6 +6,7 @@ const url = `mongodb://${HOST}:27017/task-manager-api`;
 
 mongoose
   .connect(url, {
+    useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

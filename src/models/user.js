@@ -1,3 +1,4 @@
+const bcryptjs = require('bcryptjs');
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 
@@ -14,6 +15,7 @@ const UserSchema = new Schema({
     trim: true,
     lowercase: true,
     required: true,
+    unique: true,
     validate(value) {
       if (!isEmail(value)) {
         throw new Error('Email is inValid.');
@@ -40,6 +42,33 @@ const UserSchema = new Schema({
       }
     },
   },
+});
+
+UserSchema.statics.findByCredentials = async function (email, password) {
+  const user = await this.findOne({ email });
+
+  if (!user) {
+    throw new Error('Unable to login');
+  }
+
+  const isMatch = await bcryptjs.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new Error('Unable to login');
+  }
+
+  return user;
+};
+/** Hash the plain text password before saving */
+UserSchema.pre('save', async function (next) {
+  // console.log('[just before saving!]');
+  const user = this;
+  if (user.isModified('password')) {
+    // console.log('[password is modified]');
+    user.password = await bcryptjs.hash(user.password, 10);
+  }
+
+  next();
 });
 
 const User = model('User', UserSchema);
