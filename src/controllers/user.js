@@ -69,9 +69,24 @@ const updateUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  const { params } = req;
+  const { userId } = params;
+  try {
+    const user = await User.findByIdAndDelete(userId);
+    if (!user) {
+      return res.status(404).json();
+    }
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 module.exports = {
   createUser,
   readUsers,
   readUser,
   updateUser,
+  deleteUser,
 };
