@@ -37,8 +37,41 @@ const readTask = async (req, res) => {
   }
 };
 
+const updateTask = async (req, res) => {
+  const { body, params } = req;
+  const { taskId } = params;
+
+  const updateKeys = Object.keys(body);
+  const allowUpdates = ['description', 'completed'];
+  const isValidOperation = updateKeys.every((key) =>
+    allowUpdates.includes(key),
+  );
+
+  if (!isValidOperation) {
+    return res.status(400).json({
+      error: 'Invalid updates',
+    });
+  }
+
+  try {
+    const task = await Task.findOneAndUpdate(taskId, body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!task) {
+      return res.status(404).json();
+    }
+
+    res.status(201).json(task);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
 module.exports = {
   createTask,
   readTasks,
   readTask,
+  updateTask,
 };

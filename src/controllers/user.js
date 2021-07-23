@@ -37,8 +37,41 @@ const readUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const { body, params } = req;
+  const { userId } = params;
+
+  const updateKeys = Object.keys(body);
+  const allowUpdates = ['name', 'email', 'password', 'age'];
+  const isValidOperation = updateKeys.every((key) =>
+    allowUpdates.includes(key),
+  );
+
+  if (!isValidOperation) {
+    return res.status(400).json({
+      error: 'Invalid updates',
+    });
+  }
+
+  try {
+    const user = await User.findOneAndUpdate(userId, body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!user) {
+      return res.status(404).json();
+    }
+
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
 module.exports = {
   createUser,
   readUsers,
   readUser,
+  updateUser,
 };
