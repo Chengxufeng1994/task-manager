@@ -2,11 +2,19 @@ const User = require('../models/user');
 
 const createUser = async (req, res) => {
   const { body } = req;
-  const user = new User(body);
+  const { name, email, password, ...rest } = body;
+  const user = new User({
+    name,
+    email,
+    password,
+    ...rest,
+  });
 
   try {
-    const result = await user.save();
-    res.status(201).json(result);
+    await user.save();
+    const token = await user.generateAuthToken();
+
+    res.status(201).json({ user, token });
   } catch (error) {
     res.status(400).json(error);
   }

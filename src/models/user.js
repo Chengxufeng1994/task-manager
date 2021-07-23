@@ -1,4 +1,5 @@
 const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 
@@ -42,6 +43,14 @@ const UserSchema = new Schema({
       }
     },
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 UserSchema.statics.findByCredentials = async function (email, password) {
@@ -59,6 +68,17 @@ UserSchema.statics.findByCredentials = async function (email, password) {
 
   return user;
 };
+
+UserSchema.methods.generateAuthToken = async function () {
+  const user = this;
+  // eslint-disable-next-line no-underscore-dangle
+  const token = await jwt.sign({ _id: user._id.toString() }, 'jwtsecret');
+  user.tokens = user.tokens.concat({ token });
+  await user.save();
+
+  return token;
+};
+
 /** Hash the plain text password before saving */
 UserSchema.pre('save', async function (next) {
   // console.log('[just before saving!]');

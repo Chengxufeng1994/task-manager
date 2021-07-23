@@ -6,8 +6,9 @@ const login = async (req, res) => {
   try {
     const { email, password } = body;
     const user = await User.findByCredentials(email, password);
+    const token = await user.generateAuthToken();
 
-    res.status(201).json(user);
+    res.status(201).json({ user, token });
   } catch (error) {
     res.status(400).json();
   }
