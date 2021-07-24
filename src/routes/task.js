@@ -5,9 +5,9 @@ const isAuth = require('../middlewares/isAuth');
 const router = express.Router();
 
 router.post('/', isAuth, taskController.createTask);
-router.get('/', taskController.readTasks);
-router.get('/:taskId', taskController.readTask);
-router.patch('/:taskId', taskController.updateTask);
-router.delete('/:taskId', taskController.deleteTask);
+router.get('/', isAuth, taskController.readTasks);
+router.get('/:taskId', isAuth, taskController.readTask);
+router.patch('/:taskId', isAuth, taskController.updateTask);
+router.delete('/:taskId', isAuth, taskController.deleteTask);
 
 module.exports = router;

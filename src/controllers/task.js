@@ -18,20 +18,25 @@ const createTask = async (req, res) => {
 };
 
 const readTasks = async (req, res) => {
+  const { user } = req;
+
   try {
-    const tasks = await Task.find({});
-    res.status(201).json(tasks);
+    // eslint-disable-next-line no-underscore-dangle
+    // const tasks = await Task.find({ owner: user._id });
+    await user.populate('tasks').execPopulate();
+    res.status(201).json(user.tasks);
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
 const readTask = async (req, res) => {
-  const { params } = req;
+  const { user, params } = req;
   const { taskId } = params;
 
   try {
-    const task = await Task.findById(taskId);
+    // eslint-disable-next-line no-underscore-dangle
+    const task = await Task.findOne({ _id: taskId, owner: user._id });
     if (!task) {
       return res.status(404).json();
     }
@@ -43,7 +48,7 @@ const readTask = async (req, res) => {
 };
 
 const updateTask = async (req, res) => {
-  const { body, params } = req;
+  const { user, body, params } = req;
   const { taskId } = params;
 
   const updateKeys = Object.keys(body);
@@ -64,7 +69,8 @@ const updateTask = async (req, res) => {
     //   runValidators: true,
     // });
 
-    const task = await Task.findById(taskId);
+    // eslint-disable-next-line no-underscore-dangle
+    const task = await Task.findOne({ _id: taskId, owner: user._id });
     if (!task) {
       return res.status(404).json();
     }
@@ -81,10 +87,11 @@ const updateTask = async (req, res) => {
 };
 
 const deleteTask = async (req, res) => {
-  const { params } = req;
+  const { user, params } = req;
   const { taskId } = params;
   try {
-    const task = await Task.findByIdAndDelete(taskId);
+    // eslint-disable-next-line no-underscore-dangle
+    const task = await Task.findByIdAndDelete({ _id: taskId, owner: user._id });
     if (!task) {
       return res.status(404).json();
     }
