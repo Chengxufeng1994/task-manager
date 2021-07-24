@@ -89,6 +89,38 @@ const updateUser = async (req, res) => {
   }
 };
 
+const updateProfile = async (req, res) => {
+  const { user, body } = req;
+
+  const updateKeys = Object.keys(body);
+  const allowUpdates = ['name', 'email', 'password', 'age'];
+  const isValidOperation = updateKeys.every((key) =>
+    allowUpdates.includes(key),
+  );
+
+  if (!isValidOperation) {
+    return res.status(400).json({
+      error: 'Invalid updates',
+    });
+  }
+
+  try {
+    // const user = await User.findOneAndUpdate(userId, body, {
+    //   new: true,
+    //   runValidators: true,
+    // });
+
+    updateKeys.forEach((updateKey) => {
+      user[updateKey] = body[updateKey];
+    });
+    await user.save();
+
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
 const deleteUser = async (req, res) => {
   const { params } = req;
   const { userId } = params;
@@ -103,11 +135,26 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const deleteProfile = async (req, res) => {
+  console.log(req);
+  const { user } = req;
+
+  try {
+    await user.remove();
+
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 module.exports = {
   createUser,
   readProfile,
   readUsers,
   readUser,
   updateUser,
+  updateProfile,
   deleteUser,
+  deleteProfile,
 };
