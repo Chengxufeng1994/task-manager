@@ -25,20 +25,12 @@ app.use('/api/tasks', taskRoutes);
  * * https://httpstatuses.com
  */
 
+/**
+ * * Without middleware: new request => run route handler
+ * * With middleware: new request => do some stuff => run route handler;
+ */
+
 app.listen(PORT, HOST, () => {
   // eslint-disable-next-line no-console
   console.log(`[Task Manager API running at http://${HOST}:${PORT}]`);
 });
-
-/**
-const bcryptjsFunc = async () => {
-  const password = 'qwertyuiop';
-  const hashPassword = await bcryptjs.hash(password, 10);
-  console.log('[password]: ', password);
-  console.log('[hashPassword]: ', hashPassword);
-  const isMatch = await bcryptjs.compare(password, hashPassword);
-  console.log(isMatch);
-};
-
-bcryptjsFunc();
-*/
