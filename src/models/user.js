@@ -52,6 +52,12 @@ const UserSchema = new Schema({
     },
   ],
 });
+/** https://mongoosejs.com/docs/guide.html#virtuals */
+UserSchema.virtual('tasks', {
+  ref: 'Task',
+  localField: '_id',
+  foreignField: 'owner',
+});
 
 UserSchema.statics.findByCredentials = async function (email, password) {
   const user = await this.findOne({ email });

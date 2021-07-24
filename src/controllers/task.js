@@ -1,8 +1,13 @@
 const Task = require('../models/task');
 
 const createTask = async (req, res) => {
-  const { body } = req;
-  const task = new Task(body);
+  const { user, body } = req;
+  // const { description, completed } = body;
+  const task = new Task({
+    ...body,
+    // eslint-disable-next-line no-underscore-dangle
+    owner: user._id,
+  });
 
   try {
     const result = await task.save();

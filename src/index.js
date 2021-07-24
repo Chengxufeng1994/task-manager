@@ -34,3 +34,17 @@ app.listen(PORT, HOST, () => {
   // eslint-disable-next-line no-console
   console.log(`[Task Manager API running at http://${HOST}:${PORT}]`);
 });
+
+// const Task = require('./models/task');
+// const User = require('./models/user');
+
+// const main = async () => {
+//   const task = await Task.findById('60fc314dea4c8a2f40cd6bca');
+//   await task.populate('owner').execPopulate();
+//   console.log(task);
+//   const user = await User.findById('60fc29529ce8c324560027af');
+//   await user.populate('tasks').execPopulate();
+//   console.log(user.tasks);
+// };
+
+// main();
