@@ -20,6 +20,12 @@ const createUser = async (req, res) => {
   }
 };
 
+const readProfile = async (req, res) => {
+  const { user } = req;
+
+  res.status(201).json({ user });
+};
+
 const readUsers = async (req, res) => {
   try {
     const users = await User.find({});
@@ -99,6 +105,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   createUser,
+  readProfile,
   readUsers,
   readUser,
   updateUser,
