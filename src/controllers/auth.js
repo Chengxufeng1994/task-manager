@@ -14,6 +14,33 @@ const login = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  const { user, token: tokenReq } = req;
+  try {
+    user.tokens = user.tokens.filter((token) => token.token !== tokenReq);
+    await user.save();
+
+    res.status(200).json();
+  } catch (error) {
+    res.status(500).json();
+  }
+};
+
+const logoutAll = async (req, res) => {
+  const { user } = req;
+
+  try {
+    user.tokens = [];
+    await user.save();
+
+    res.status(200).json();
+  } catch (error) {
+    res.status(500).json();
+  }
+};
+
 module.exports = {
   login,
+  logout,
+  logoutAll,
 };
