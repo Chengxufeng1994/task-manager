@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 
+const Task = require('./task');
+
 const { model, Schema } = mongoose;
 
 const UserSchema = new Schema({
@@ -104,6 +106,13 @@ UserSchema.pre('save', async function (next) {
     user.password = await bcryptjs.hash(user.password, 10);
   }
 
+  next();
+});
+
+UserSchema.pre('remove', async function (next) {
+  const user = this;
+  // eslint-disable-next-line no-underscore-dangle
+  await Task.deleteMany({ owner: user._id });
   next();
 });
 
