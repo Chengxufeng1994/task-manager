@@ -136,7 +136,6 @@ const deleteUser = async (req, res) => {
 };
 
 const deleteProfile = async (req, res) => {
-  console.log(req);
   const { user } = req;
 
   try {
@@ -149,7 +148,18 @@ const deleteProfile = async (req, res) => {
 };
 
 const uploadAvatar = async (req, res) => {
-  console.log('req.file: ', req.file);
+  const { user, file } = req;
+  user.avatar = file.buffer;
+  await user.save();
+
+  res.status(200).json();
+};
+
+const deleteAvatar = async (req, res) => {
+  const { user } = req;
+  user.avatar = undefined;
+  await user.save();
+
   res.status(200).json();
 };
 
@@ -163,4 +173,5 @@ module.exports = {
   deleteUser,
   deleteProfile,
   uploadAvatar,
+  deleteAvatar,
 };

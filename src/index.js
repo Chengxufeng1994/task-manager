@@ -47,7 +47,7 @@ app.use(helmet());
 app.use(morgan('tiny'));
 app.use(
   multer({
-    storage: fileStorage,
+    // storage: fileStorage,
     fileFilter,
     limits: {
       fileSize: 1024 * 1000,
