@@ -17,14 +17,20 @@ const createTask = async (req, res) => {
   }
 };
 // GET /api/tasks?complete=true
+// GET /api/tasks?limit=10&skip=20
 const readTasks = async (req, res) => {
   const { user, query } = req;
-  const { completed } = query;
+  const { completed, limit, skip } = query;
 
   const match = {};
   if (completed) {
     match.completed = completed === 'true';
   }
+
+  const options = {
+    limit: parseInt(limit, 10),
+    skip: parseInt(limit, 10) * parseInt(skip, 10),
+  };
 
   try {
     // eslint-disable-next-line no-underscore-dangle
@@ -37,6 +43,7 @@ const readTasks = async (req, res) => {
       .populate({
         path: 'tasks',
         match,
+        options,
       })
       .execPopulate();
     res.status(201).json(user.tasks);
