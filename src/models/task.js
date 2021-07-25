@@ -2,22 +2,27 @@ const mongoose = require('mongoose');
 
 const { model, Schema } = mongoose;
 
-const TaskSchema = new Schema({
-  description: {
-    type: String,
-    trim: true,
-    required: true,
+const TaskSchema = new Schema(
+  {
+    description: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    completed: {
+      type: Boolean,
+      default: false,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
   },
-  completed: {
-    type: Boolean,
-    default: false,
+  {
+    timestamps: true,
   },
-  owner: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'User',
-  },
-});
+);
 
 const Task = model('Task', TaskSchema);
 

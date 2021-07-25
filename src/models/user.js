@@ -7,53 +7,58 @@ const Task = require('./task');
 
 const { model, Schema } = mongoose;
 
-const UserSchema = new Schema({
-  name: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  email: {
-    type: String,
-    trim: true,
-    lowercase: true,
-    required: true,
-    unique: true,
-    validate(value) {
-      if (!isEmail(value)) {
-        throw new Error('Email is inValid.');
-      }
+const UserSchema = new Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      required: true,
     },
-  },
-  password: {
-    type: String,
-    trim: true,
-    required: true,
-    minLength: 7,
-    validate(value) {
-      if (value.toLowerCase().includes('password')) {
-        throw new Error('Password cannot contain "Password".');
-      }
-    },
-  },
-  age: {
-    type: Number,
-    default: 0,
-    validate(value) {
-      if (value < 0) {
-        throw new Error('Age must be a positive number.');
-      }
-    },
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
+    email: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      required: true,
+      unique: true,
+      validate(value) {
+        if (!isEmail(value)) {
+          throw new Error('Email is inValid.');
+        }
       },
     },
-  ],
-});
+    password: {
+      type: String,
+      trim: true,
+      required: true,
+      minLength: 7,
+      validate(value) {
+        if (value.toLowerCase().includes('password')) {
+          throw new Error('Password cannot contain "Password".');
+        }
+      },
+    },
+    age: {
+      type: Number,
+      default: 0,
+      validate(value) {
+        if (value < 0) {
+          throw new Error('Age must be a positive number.');
+        }
+      },
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  },
+);
 /** https://mongoosejs.com/docs/guide.html#virtuals */
 UserSchema.virtual('tasks', {
   ref: 'Task',
