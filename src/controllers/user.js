@@ -1,5 +1,6 @@
 const sharp = require('sharp');
 const User = require('../models/user');
+const { sendWelcomeEmail, sendCancelEmail } = require('../emails/account');
 
 const createUser = async (req, res) => {
   const { body } = req;
@@ -13,6 +14,7 @@ const createUser = async (req, res) => {
 
   try {
     await user.save();
+    sendWelcomeEmail(email, name);
     const token = await user.generateAuthToken();
 
     res.status(201).json({ user, token });
@@ -141,7 +143,7 @@ const deleteProfile = async (req, res) => {
 
   try {
     await user.remove();
-
+    sendCancelEmail(user.email, user.name);
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json(error);
