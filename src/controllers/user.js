@@ -1,3 +1,4 @@
+const sharp = require('sharp');
 const User = require('../models/user');
 
 const createUser = async (req, res) => {
@@ -149,7 +150,11 @@ const deleteProfile = async (req, res) => {
 
 const uploadAvatar = async (req, res) => {
   const { user, file } = req;
-  user.avatar = file.buffer;
+  const buffer = await sharp(file.buffer)
+    .resize({ width: 250, height: 250 })
+    .png()
+    .toBuffer();
+  user.avatar = buffer;
   await user.save();
 
   res.status(200).json();
@@ -171,7 +176,7 @@ const getUserAvatarById = async (req, res) => {
       throw new Error('User not found');
     }
 
-    res.set('Content-Type', 'image/jpg');
+    res.set('Content-Type', 'image/png');
     res.send(user.avatar);
   } catch (error) {
     res.status(404).json();
