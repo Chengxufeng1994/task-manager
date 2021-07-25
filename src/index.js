@@ -58,6 +58,12 @@ app.use(
 app.use('/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
+// eslint-disable-next-line no-unused-vars
+app.use((error, req, res, next) => {
+  res.status(400).json({
+    error: error.message,
+  });
+});
 
 /**
  * * http status
