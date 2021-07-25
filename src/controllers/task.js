@@ -18,18 +18,26 @@ const createTask = async (req, res) => {
 };
 // GET /api/tasks?complete=true
 // GET /api/tasks?limit=10&skip=20
+// GET /api?sortBy=createdAt:desc
 const readTasks = async (req, res) => {
   const { user, query } = req;
-  const { completed, limit, skip } = query;
+  const { completed, limit, skip, sortBy } = query;
 
   const match = {};
   if (completed) {
     match.completed = completed === 'true';
   }
 
+  const sort = {};
+  if (sortBy) {
+    const [field, desc] = sortBy.split(':');
+    sort[field] = desc === 'desc' ? 1 : -1;
+  }
+
   const options = {
     limit: parseInt(limit, 10),
     skip: parseInt(limit, 10) * parseInt(skip, 10),
+    sort,
   };
 
   try {
