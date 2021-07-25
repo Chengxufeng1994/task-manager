@@ -14,5 +14,6 @@ router.patch('/me', isAuth, userController.updateProfile);
 router.patch('/:userId', isAuth, userController.updateUser);
 router.delete('/me', isAuth, userController.deleteProfile);
 router.delete('/:userId', isAuth, userController.deleteUser);
+router.get('/:userId/avatar', userController.getUserAvatarById);
 
 module.exports = router;

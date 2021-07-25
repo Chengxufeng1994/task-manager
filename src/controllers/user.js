@@ -163,6 +163,21 @@ const deleteAvatar = async (req, res) => {
   res.status(200).json();
 };
 
+const getUserAvatarById = async (req, res) => {
+  try {
+    // eslint-disable-next-line no-underscore-dangle
+    const user = await User.findById(req.params.userId);
+    if (!user || !user.avatar) {
+      throw new Error('User not found');
+    }
+
+    res.set('Content-Type', 'image/jpg');
+    res.send(user.avatar);
+  } catch (error) {
+    res.status(404).json();
+  }
+};
+
 module.exports = {
   createUser,
   readProfile,
@@ -174,4 +189,5 @@ module.exports = {
   deleteProfile,
   uploadAvatar,
   deleteAvatar,
+  getUserAvatarById,
 };
