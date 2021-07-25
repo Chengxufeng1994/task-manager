@@ -16,14 +16,29 @@ const createTask = async (req, res) => {
     res.status(400).json(error);
   }
 };
-
+// GET /api/tasks?complete=true
 const readTasks = async (req, res) => {
-  const { user } = req;
+  const { user, query } = req;
+  const { completed } = query;
+
+  const match = {};
+  if (completed) {
+    match.completed = completed === 'true';
+  }
 
   try {
     // eslint-disable-next-line no-underscore-dangle
     // const tasks = await Task.find({ owner: user._id });
-    await user.populate('tasks').execPopulate();
+    /**
+     * * Populate Query conditions and other options
+     * * https://mongoosejs.com/docs/populate.html#query-conditions
+     */
+    await user
+      .populate({
+        path: 'tasks',
+        match,
+      })
+      .execPopulate();
     res.status(201).json(user.tasks);
   } catch (error) {
     res.status(500).json(error);

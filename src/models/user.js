@@ -59,7 +59,11 @@ const UserSchema = new Schema(
     timestamps: true,
   },
 );
-/** https://mongoosejs.com/docs/guide.html#virtuals */
+/**
+ * * Populate virtuals
+ * * https://mongoosejs.com/docs/guide.html#virtuals
+ * * https://mongoosejs.com/docs/populate.html#populate-virtuals
+ * */
 UserSchema.virtual('tasks', {
   ref: 'Task',
   localField: '_id',
