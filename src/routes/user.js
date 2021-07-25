@@ -7,6 +7,7 @@ const router = express.Router();
 router.post('/', userController.createUser);
 router.get('/', isAuth, userController.readUsers);
 router.get('/me', isAuth, userController.readProfile);
+router.post('/me/avatar', isAuth, userController.uploadAvatar);
 router.get('/:userId', isAuth, userController.readUser);
 router.patch('/me', isAuth, userController.updateProfile);
 router.patch('/:userId', isAuth, userController.updateUser);

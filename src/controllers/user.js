@@ -148,6 +148,11 @@ const deleteProfile = async (req, res) => {
   }
 };
 
+const uploadAvatar = async (req, res) => {
+  console.log('req.file: ', req.file);
+  res.status(200).json();
+};
+
 module.exports = {
   createUser,
   readProfile,
@@ -157,4 +162,5 @@ module.exports = {
   updateProfile,
   deleteUser,
   deleteProfile,
+  uploadAvatar,
 };

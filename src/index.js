@@ -1,8 +1,10 @@
 require('./db/mongoose');
 
+const compression = require('compression');
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const multer = require('multer');
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
@@ -12,9 +14,38 @@ const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || '127.0.0.1';
 
 const app = express();
+
+const fileStorage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, 'avatars');
+  },
+  filename(req, file, cb) {
+    cb(null, `${new Date().toISOString()}-${file.originalname}`);
+  },
+});
+const fileFilter = function (req, file, cb) {
+  // The function should call `cb` with a boolean
+  // to indicate if the file should be accepted
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    // To accept the file pass `true`, like so:
+    cb(null, true);
+  } else {
+    // To reject this file pass `false`, like so:
+    cb(null, false);
+  }
+  // You can always pass an error if something goes wrong:
+  // cb(new Error("I don't have a clue!"));
+};
+
+app.use(compression());
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('tiny'));
+app.use(multer({ storage: fileStorage, fileFilter }).single('avatar'));
 
 app.use('/auth', authRoutes);
 app.use('/api/users', userRoutes);
