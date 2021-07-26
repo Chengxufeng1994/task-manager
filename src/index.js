@@ -12,7 +12,7 @@ const userRoutes = require('./routes/user');
 const taskRoutes = require('./routes/task');
 
 const PORT = process.env.PORT || 5000;
-const HOST = process.env.HOST || '127.0.0.1';
+const HOST = process.env.HOST || '0.0.0.0';
 
 const app = express();
 
