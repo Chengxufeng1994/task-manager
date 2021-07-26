@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
-const HOST = process.env.HOST || '127.0.0.1';
 // Connection URL
-const url = `mongodb://${HOST}:27017/task-manager-api`;
+const url = process.env.MONGODB_URL;
 
 mongoose
   .connect(url, {

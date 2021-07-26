@@ -1,3 +1,4 @@
+require('dotenv').config({ path: 'src/config/.env' });
 require('./db/mongoose');
 
 const compression = require('compression');
