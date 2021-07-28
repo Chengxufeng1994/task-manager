@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Async test demo first async test 1`] = `1`;
+
+exports[`Async test demo should add two numbers 1`] = `3`;
+
+exports[`math test should calculate total with tip 1`] = `13`;
+
+exports[`math test should convert 0 C to 32 F 1`] = `32`;
+
+exports[`math test should convert 32 F to 0 C 1`] = `0`;
