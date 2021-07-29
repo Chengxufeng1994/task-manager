@@ -5,7 +5,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const sendWelcomeEmail = (email, name) => {
   const msg = {
     to: email, // Change to your recipient
-    from: 'bennycheng@ns-guard.com', // Change to your verified sender
+    from: '0114084@nkust.edu.tw', // Change to your verified sender
     subject: 'Thanks for joining in',
     text: `Welcome to the app, ${name}. Let me know how you get along with the app`,
   };
@@ -23,7 +23,7 @@ const sendWelcomeEmail = (email, name) => {
 const sendCancelEmail = (email, name) => {
   const msg = {
     to: email, // Change to your recipient
-    from: 'bennycheng@ns-guard.com', // Change to your verified sender
+    from: '0114084@nkust.edu.tw', // Change to your verified sender
     subject: 'Sorry to see you go!',
     text: `Goodbye, ${name}. I hope to see you back sometime soon.`,
   };
