@@ -12,7 +12,7 @@
     "lint:fix": "eslint --fix .",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
-    "test": "NODE_ENV=test jest --watch --config=jest.config.js",
+    "test": "NODE_ENV=test jest --watch --runInBand --config=jest.config.js",
     "test:coverage": "NODE_ENV=test jest --coverage --config=jest.config.js",
     "test:updateSnapshot": "NODE_ENV=test jest --updateSnapshot --config=jest.config.js",
     "prepare": "husky install"
