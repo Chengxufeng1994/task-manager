@@ -113,6 +113,48 @@ describe('user test', () => {
     const { status } = await result;
     expect(status).toBe(401);
   });
+
+  test('should upload avatar image', async () => {
+    const avatarPath = `${__dirname}/fixtures/profile-pic.jpg`;
+
+    const response = await request(app)
+      .post('/api/users/me/avatar')
+      .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+      .attach('avatar', avatarPath);
+
+    const { status } = response;
+    expect(status).toBe(200);
+
+    // eslint-disable-next-line no-underscore-dangle
+    const user = User.findById(userOne._id);
+    expect(user.avatar).toEqual(expect.any.Buffer);
+  });
+
+  test('should update valid user fields', async () => {
+    const response = await request(app)
+      .patch('/api/users/me')
+      .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+      .send({
+        age: 27,
+      });
+
+    const { status, body } = response;
+    expect(status).toBe(201);
+    expect(body.user.age).toEqual(27);
+  });
+
+  test('should not update invalid user fields', async () => {
+    const response = await request(app)
+      .patch('/api/users/me')
+      .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+      .send({
+        location: 'taiwan',
+      });
+
+    const { status, body } = response;
+    expect(status).toBe(400);
+    expect(body.error).toEqual('Invalid updates');
+  });
 });
 
 describe('Testing with Authentication', () => {
