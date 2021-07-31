@@ -28,24 +28,43 @@ beforeEach(async () => {
 
 describe('user test', () => {
   test('should signup a new user', async () => {
-    await request(app)
-      .post('/api/users')
-      .send({
+    const response = await request(app).post('/api/users').send({
+      name: 'benny',
+      email: 'benny12628@task.com',
+      password: 'Red12345!',
+    });
+    // Assert that database was changed correctly
+    const { status, body } = response;
+    // eslint-disable-next-line no-underscore-dangle
+    const user = await User.findById(body.user._id);
+    expect(user).not.toBeNull();
+    // Assert about the response
+    expect(status).toEqual(201);
+    expect(body).toMatchObject({
+      user: {
         name: 'benny',
         email: 'benny12628@task.com',
-        password: 'Red12345!',
-      })
-      .expect(201);
+      },
+      token: user.tokens[0].token,
+    });
+    expect(user.password).not.toBe('Red12345!');
   });
 
   test('should login existing user', async () => {
-    await request(app)
-      .post('/auth/login')
-      .send({
-        email: userOne.email,
-        password: userOne.password,
-      })
-      .expect(200);
+    const response = await request(app).post('/auth/login').send({
+      email: userOne.email,
+      password: userOne.password,
+    });
+
+    const { status, body } = response;
+    // eslint-disable-next-line no-underscore-dangle
+    const user = await User.findById(body.user._id);
+    expect(user).not.toBeNull();
+    // Assert about the response
+    expect(status).toEqual(200);
+    // Assert that token in response matches users second token
+    expect(user.tokens.length).toBe(2);
+    expect(body.token).toEqual(user.tokens[1].token);
   });
 
   test('should login noExisting user', async () => {
@@ -81,8 +100,11 @@ describe('user test', () => {
       .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
       .send();
 
-    const { status } = await result;
+    const { status, body } = await result;
+    // eslint-disable-next-line no-underscore-dangle
+    const user = await User.findById(body._id);
     expect(status).toBe(201);
+    expect(user).toBeNull();
   });
 
   test('should not delete account for unauthenticated user', async () => {
