@@ -2,7 +2,13 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 const app = require('../src/app');
 const User = require('../src/models/user');
-const { userOneObjectId, userOne, setupDatabase } = require('./fixtures/db');
+const {
+  userOneObjectId,
+  userOne,
+  setupDatabase,
+} = require('./__fixtures__/db');
+
+jest.setTimeout(10000);
 
 beforeEach(setupDatabase);
 

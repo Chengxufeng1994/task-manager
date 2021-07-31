@@ -1,6 +1,3 @@
-const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
-
-require('dotenv').config({ path: `src/config/${envFile}` });
 require('./db/mongoose');
 
 const compression = require('compression');
@@ -13,19 +10,16 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const taskRoutes = require('./routes/task');
 
-const PORT = process.env.PORT || 5000;
-const HOST = process.env.HOST || '0.0.0.0';
-
 const app = express();
 
-const fileStorage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'avatars');
-  },
-  filename(req, file, cb) {
-    cb(null, `${new Date().toISOString()}-${file.originalname}`);
-  },
-});
+// const fileStorage = multer.diskStorage({
+//   destination(req, file, cb) {
+//     cb(null, 'avatars');
+//   },
+//   filename(req, file, cb) {
+//     cb(null, `${new Date().toISOString()}-${file.originalname}`);
+//   },
+// });
 const fileFilter = function (req, file, cb) {
   // The function should call `cb` with a boolean
   // to indicate if the file should be accepted

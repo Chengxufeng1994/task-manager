@@ -1,7 +1,5 @@
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
-
 require('dotenv').config({ path: `src/config/${envFile}` });
-require('./db/mongoose');
 
 const app = require('./app');
 

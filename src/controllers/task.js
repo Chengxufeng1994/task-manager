@@ -121,7 +121,7 @@ const deleteTask = async (req, res) => {
   const { taskId } = params;
   try {
     // eslint-disable-next-line no-underscore-dangle
-    const task = await Task.findByIdAndDelete({ _id: taskId, owner: user._id });
+    const task = await Task.findOneAndDelete({ _id: taskId, owner: user._id });
     if (!task) {
       return res.status(404).json();
     }
